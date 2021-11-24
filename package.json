@@ -1,0 +1,11 @@
+{
+  "name": "midnight-simulator",
+  "version": "1.0.0",
+  "description": "A brute force script to calculate strategical odds for the dice game, Midnight",
+  "main": "bruteforce.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jpecht",
+  "license": "ISC"
+}
