@@ -86,10 +86,10 @@ module.exports = {
   },
 
   formatTime: (ms) => {
-    if (ms > 3600000) return `${Math.ceil(ms / 360000) / 10}hr`;
-    if (ms > 60000) return `${Math.ceil(ms / 6000) / 10}min`;
-    if (ms > 1000) return `${Math.ceil(ms / 100) / 10}s`;
-    return `${Math.ceil(ms)}ms`;
+    if (ms > 3600000) return `${Math.ceil(ms / 360000) / 10} hr`;
+    if (ms > 60000) return `${Math.ceil(ms / 6000) / 10} min`;
+    if (ms > 1000) return `${Math.ceil(ms / 100) / 10} s`;
+    return `${Math.ceil(ms)} ms`;
   },
 
   /**
