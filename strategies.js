@@ -19,8 +19,8 @@ function takeAllQualifiers(stored, rolled) {
       if (qualifierIndex > -1) {
         stored.push(qualifier);
         rolled.splice(qualifierIndex, 1);
+        hasQualifier = true;
       }
-      hasQualifier = true;
     }
     numQualifiersNeeded -= hasQualifier;
   });
@@ -33,7 +33,7 @@ function takeAllQualifiers(stored, rolled) {
  * Slight flaw, need both qualifiers: roll [1, 5, 6] => take [1, 6].
  * In reality, would only want to take [1]
  */
-function takeActionMidnightStrategy(storedDice, rolledDice) {
+function takeActionSixes(storedDice, rolledDice) {
   const stored = storedDice.slice(0);
   const rolled = rolledDice.slice(0);
   const numRolled = rolled.length;
@@ -111,7 +111,7 @@ function takeActionOneQualifier(storedDice, rolledDice) {
 module.exports = [
   {
     name: 'Hold Sixes',
-    action: takeActionMidnightStrategy,
+    action: takeActionSixes,
   }, {
     name: 'Hold Fives and Sixes',
     action: takeActionFives,
