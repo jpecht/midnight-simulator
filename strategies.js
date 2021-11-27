@@ -89,8 +89,8 @@ function takeActionOneQualifier(storedDice, rolledDice) {
 
       // If only 2 or more dice would be left, re-roll a qualifier to save more dice to roll
       if (numDiceLeftAfterTake >= 2) {
-        takeAllOfNumber(stored, rolled, 1, 1);
-        takeAllOfNumber(stored, rolled, 6);
+        takeAllOfNumber(stored, rolled, 4, 1);
+        takeAllOfNumber(stored, rolled, 6, numSixes);
         return stored;
       }
     }
