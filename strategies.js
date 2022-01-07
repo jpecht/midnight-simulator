@@ -1,7 +1,7 @@
 const QUALIFIERS = [1, 4];
 
 /* ------------------- Actions ------------------ */
-function takeAllOfNumber(stored, rolled, num, maxTaken) {
+function takeAllOfNumber(stored, rolled, num, maxTaken = rolled.length) {
   for (let i = 0; i < maxTaken; i++) {
     const index = rolled.indexOf(num);
     if (index === -1) break;
@@ -108,6 +108,29 @@ function takeActionOneQualifier(storedDice, rolledDice) {
   return stored;  
 }
 
+/**
+ * Strategy: Re-roll all until qualifiers met. Then hold 6s.
+ */
+function takeActionNeedQualifiers(storedDice, rolledDice) {
+  const stored = storedDice.slice(0);
+  const rolled = rolledDice.slice(0);
+  const numRolled = rolled.length;
+
+  const numQualifiersNeeded = takeAllQualifiers(stored, rolled);
+  if (!numQualifiersNeeded) {
+    takeAllOfNumber(stored, rolled, 6);
+  }
+
+  // Take out at least 1 dice
+  if (rolled.length === numRolled) {
+    // Don't bother splicing max number out to save operation time
+    stored.push(Math.max(...rolled));
+  }
+
+  return stored;
+}
+
+
 module.exports = [
   {
     name: 'Hold Sixes',
@@ -118,5 +141,8 @@ module.exports = [
   }, {
     name: 'Hold Sixes, Take Only One Qualifier Sometimes',
     action: takeActionOneQualifier,
-  }
+  }, {
+    name: 'Wait for Qualifiers',
+    action: takeActionNeedQualifiers,
+  },
 ];

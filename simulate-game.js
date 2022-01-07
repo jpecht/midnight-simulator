@@ -8,7 +8,11 @@ const QUALIFIERS = [1, 4];
 function simulateGame(action) {
   let storedDice = [];
   while (storedDice.length < 6) {
-    storedDice = action(storedDice, rollDice(6 - storedDice.length));
+    const rolledDice = rollDice(6 - storedDice.length);
+    console.log(`rolled: ${rolledDice.toString()}`);
+    console.log(`stored: ${storedDice}`);
+    console.log('-------------------------------');
+    storedDice = action(storedDice, rolledDice);
   }
 
   const finalScore = helpers.calculateScore(storedDice);
