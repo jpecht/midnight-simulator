@@ -23,24 +23,26 @@ for (let i = 0; i <= 24; i += 1) {
 }
 
 // Keep track of how many loops have been run so far
-let numPossibilities = 0;
+let numGames = 0;
 let progress = 0;
 
 /**
  * Runs through EVERY game possibility
  */
-function runEveryGame(storedDice = [], multiplier = 1, action) {
+function runEveryGame(storedDice = [], percentageCombined, action) {
   const dicePossibilities = dicePossibilitiesLookup[TOTAL_DICE - storedDice.length];
-  dicePossibilities.forEach(({ dice, count }) => {
-    const newMultiplier = multiplier * count;
+  dicePossibilities.forEach(({ dice, percentage }) => {
+    const newPercentage = percentageCombined * percentage;
     const newStoredDice = action(storedDice, dice);
     if (newStoredDice.length < TOTAL_DICE) {
-      runEveryGame(newStoredDice, newMultiplier, action);
+      runEveryGame(newStoredDice, newPercentage, action);
     } else {
-      scoreFrequency[calculateScore(newStoredDice)] += newMultiplier;
-      numPossibilities += 1;
+      // End of a run
+      scoreFrequency[calculateScore(newStoredDice)] += newPercentage;
+      numGames += 1;
     }
 
+    // Solely to keep track of progress
     if (!storedDice.length) {
       progress += 1 / dicePossibilities.length;
       console.log(`${Math.round(progress * 10000) / 100}% complete...`);
@@ -54,18 +56,18 @@ function simulate(action) {
   const endTime = performance.now();
 
   // Calculate number of games
-  const numGames = Object.values(scoreFrequency).reduce((acc, games) => acc + games, 0);
+  const sumPerc = Object.values(scoreFrequency).reduce((acc, games) => acc + games, 0);
+  console.log(`This should be close to 1: ${sumPerc}`);
 
   // Log final data
   console.log('------------------------------------------');
   Object.keys(scoreFrequency).forEach((score) => {
     const scoreText = (score === '24') ? 'Midnight' : score;
-    const gamesForScore = scoreFrequency[score];
-    const percGamesForScore = Math.ceil(1000 * gamesForScore / numGames) / 10;
-    console.log(`${scoreText}: ${gamesForScore.toLocaleString()} (${percGamesForScore}%)`);
+    const percGamesForScore = Math.ceil(1e5 * scoreFrequency[score]) / 1e3;
+    console.log(`${scoreText}: ${percGamesForScore}%`);
   });
   console.log('------------------------------------------');
-  console.log(`Out of ${formatLargeNumber(numGames)} games, there were ${formatLargeNumber(numPossibilities)} unique games evaluated in ${formatTime(endTime - startTime)}!`);
+  console.log(`There were ${formatLargeNumber(numGames)} unique games evaluated in ${formatTime(endTime - startTime)}!`);
 }
 
 /* ---------------------------------------------------- */

@@ -35,13 +35,14 @@ function getPermutations(dice) {
  */
 function getPossibilitySet(numDice) {
   const possibilities = [];
+  const total = Math.pow(6, numDice);
 
   // Initialize dice set; Push initial set
   const dice = [];
   for (let i = 0; i < numDice; i += 1) {
     dice.push(1);
   }
-  possibilities.push({ dice: dice.slice(0), count: 1 });
+  possibilities.push({ dice: dice.slice(0), percentage: 1 / total });
 
   /**
    * Loop through all unique dice combinations
@@ -58,7 +59,7 @@ function getPossibilitySet(numDice) {
     }
     possibilities.push({
       dice: dice.slice(0),
-      count: getPermutations(dice),
+      percentage: getPermutations(dice) / total,
     });
   } while (dice.find(d => d !== 6));
 

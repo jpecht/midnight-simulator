@@ -6,13 +6,19 @@ const strategies = require('./strategies');
 const QUALIFIERS = [1, 4];
 
 function simulateGame(action) {
+  console.log('-------------------------------');
   let storedDice = [];
   while (storedDice.length < 6) {
+    const origStoredLen = storedDice.length;
     const rolledDice = rollDice(6 - storedDice.length);
+
     console.log(`rolled: ${rolledDice.toString()}`);
+
+    storedDice = action(storedDice, rolledDice);
+
+    console.log(`take: ${storedDice.slice(origStoredLen)}`);
     console.log(`stored: ${storedDice}`);
     console.log('-------------------------------');
-    storedDice = action(storedDice, rolledDice);
   }
 
   const finalScore = helpers.calculateScore(storedDice);
@@ -33,13 +39,13 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-console.log('');
-console.log('List of available strategies:');
-strategies.forEach((strategy, index) => {
-  console.log(`${index + 1}: ${strategy.name}`);
-});
 
 function promptSimulation() {
+  console.log('');
+  console.log('List of available strategies:');
+  strategies.forEach((strategy, index) => {
+    console.log(`${index + 1}: ${strategy.name}`);
+  });
   rl.question('\nPick a strategy (1): ', (strategyNum) => {
     let strategyIndex = strategyNum - 1;
     if (strategyIndex < 0 || strategyIndex >= strategies.length) strategyIndex = 0;
