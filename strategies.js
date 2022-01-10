@@ -76,7 +76,7 @@ function takeActionFives(storedDice, rolledDice) {
  * e.g. roll [1, 4, 6, 2, 2, 2] => take [1, 6]
  * e.g. roll [1, 4, 6, 2, 2] => take [1, 4, 6]
  */
-function takeActionOneQualifier(storedDice, rolledDice) {
+function takeActionRerollQualifier(storedDice, rolledDice) {
   const stored = storedDice.slice(0);
   const rolled = rolledDice.slice(0);
   const numRolled = rolled.length;
@@ -111,7 +111,7 @@ function takeActionOneQualifier(storedDice, rolledDice) {
 /**
  * Strategy: Re-roll all until qualifiers met. Then hold 6s.
  */
-function takeActionNeedQualifiers(storedDice, rolledDice) {
+function takeActionWaitForQualifiers(storedDice, rolledDice) {
   const stored = storedDice.slice(0);
   const rolled = rolledDice.slice(0);
   const numRolled = rolled.length;
@@ -139,10 +139,10 @@ module.exports = [
     name: 'Hold Fives and Sixes',
     action: takeActionFives,
   }, {
-    name: 'Hold Sixes, Take Only One Qualifier Sometimes',
-    action: takeActionOneQualifier,
+    name: 'Re-roll Qualifier',
+    action: takeActionRerollQualifier,
   }, {
     name: 'Wait for Qualifiers',
-    action: takeActionNeedQualifiers,
+    action: takeActionWaitForQualifiers,
   },
 ];
